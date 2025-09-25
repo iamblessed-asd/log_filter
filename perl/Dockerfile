@@ -33,9 +33,11 @@ COPY apache_app.conf /etc/apache2/sites-available/000-default.conf
 WORKDIR /usr/src/app
 
 COPY entrypoint.sh /usr/src/app/
-RUN chmod +x /usr/src/app/entrypoint.sh
+RUN dos2unix /usr/src/app/entrypoint.sh && \
+    chmod +x /usr/src/app/entrypoint.sh
 
 COPY read_log.pl /usr/src/app/
+RUN dos2unix /usr/src/app/read_log.pl
 
 COPY html/ /var/www/html/
 
