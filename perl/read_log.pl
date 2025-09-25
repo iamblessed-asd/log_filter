@@ -172,4 +172,6 @@ if ($msg_count == 0 && $log_count == 0 && !$force) {
     print "Загружено: $msg_count в message, $log_count в log\n";
 }
 
+print "Веб доступен по адресу http://localhost:8080/"
+
 $dbh->disconnect;
