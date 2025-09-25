@@ -28,18 +28,21 @@ RUN apt-get purge -y build-essential make gcc libperl-dev && \
 RUN a2enmod cgi && a2enmod perl && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-COPY --chmod=644 apache_app.conf /etc/apache2/sites-available/000-default.conf
+COPY apache_app.conf /etc/apache2/sites-available/000-default.conf
 
 WORKDIR /usr/src/app
 
-COPY --chmod=755 entrypoint.sh /usr/src/app/
-RUN chmod +x /usr/src/app/entrypoint.sh
+COPY entrypoint.sh /usr/src/app/
+RUN dos2unix /usr/src/app/entrypoint.sh && \
+    chmod +x /usr/src/app/entrypoint.sh && \
+    file /usr/src/app/entrypoint.sh
 
-COPY --chmod=644 read_log.pl /usr/src/app/
+COPY read_log.pl /usr/src/app/
+RUN dos2unix /usr/src/app/read_log.pl
 
-COPY --chmod=644 html/ /var/www/html/
+COPY html/ /var/www/html/
 
-COPY --chmod=755 cgi-bin/ /usr/lib/cgi-bin/
+COPY cgi-bin/ /usr/lib/cgi-bin/
 RUN chmod +x /usr/lib/cgi-bin/*.pl && \
     find /usr/lib/cgi-bin -type f -name '*.pl' -exec dos2unix {} \;
 
